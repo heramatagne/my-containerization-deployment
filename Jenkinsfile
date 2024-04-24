@@ -7,19 +7,19 @@ pipeline {
         DOCKER_HUB_REPO = 'herasidi/centos_webapp' // Define your Docker Hub repository name      
     }
 
-    stages{
-        stage("Clone Code"){
-            steps {
-                echo "Cloning the code"
-                git url:"https://github.com/heramatagne/my-containerization-deployment.git", branch: "main"
-            }
-        }
-        stage("Build"){
-            steps {
-                echo "Building the image"
-                sh "docker build -t my-note-app ."
-            }
-        }
+    // stages{
+    //     stage("Clone Code"){
+    //         steps {
+    //             echo "Cloning the code"
+    //             git url:"https://github.com/heramatagne/my-containerization-deployment.git", branch: "main"
+    //         }
+    //     }
+    //     stage("Build"){
+    //         steps {
+    //             echo "Building the image"
+    //             sh "docker build -t my-note-app ."
+    //         }
+    //     }
         stage("Push to Docker Hub"){
             steps {
                 echo "Pushing the image to docker hub"
