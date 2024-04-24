@@ -1,6 +1,12 @@
 pipeline {
     agent any 
-    
+
+    environment {
+        DOCKER_IMAGE_TAG = 'django'
+        // KUBECONFIG = credentials('your-kubeconfig-credential-id')
+        DOCKER_HUB_REPO = 'herasidi/centos_webapp' // Define your Docker Hub repository name      
+    }
+
     stages{
         stage("Clone Code"){
             steps {
@@ -17,10 +23,8 @@ pipeline {
         stage("Push to Docker Hub"){
             steps {
                 echo "Pushing the image to docker hub"
-                withCredentials([usernamePassword(credentialsId:"dockerHub",passwordVariable:"dockerHubPass",usernameVariable:"dockerHubUser")]){
-                sh "docker tag my-note-app ${env.dockerHubUser}/my-note-app:latest"
-                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-                sh "docker push ${env.dockerHubUser}/my-note-app:latest"
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                        docker.image("${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}").push()
                 }
             }
         }
