@@ -2,8 +2,8 @@ pipeline {
     agent any 
 
     environment {
-        DOCKER_IMAGE_TAG = 'django'
-        DOCKER_HUB_REPO = 'herasidi/centos_webapp'
+        //DOCKER_IMAGE_TAG = '1'
+        DOCKER_HUB_REPO = 'herasidi/django-notes-app'
     }
 
     stages {
@@ -16,7 +16,7 @@ pipeline {
         stage("Build") {
             steps {
                 echo "Building the image"
-                sh "docker build -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ."
+                sh "docker build -t ${DOCKER_HUB_REPO}:${BUILD_NUMBER} ."
             }
         }
         stage("Push to Docker Hub") {
@@ -24,7 +24,7 @@ pipeline {
                 echo "Pushing the image to Docker Hub"
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerHub') {
-                        docker.image("${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}").push()
+                        docker.image("${DOCKER_HUB_REPO}:${BUILD_NUMBER}").push()
                     }
                 }
             }
