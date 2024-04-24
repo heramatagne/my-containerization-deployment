@@ -16,7 +16,7 @@ pipeline {
         stage("Build") {
             steps {
                 echo "Building the image"
-                sh "docker build -t ${DOCKER_HUB_REPO}:${BUILD_NUMBER} ."
+                sh "docker build -t ${DOCKER_HUB_REPO}:latest ."
             }
         }
         stage("Push to Docker Hub") {
@@ -24,7 +24,7 @@ pipeline {
                 echo "Pushing the image to Docker Hub"
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerHub') {
-                        docker.image("${DOCKER_HUB_REPO}:${BUILD_NUMBER}").push()
+                        docker.image("${DOCKER_HUB_REPO}:latest").push()
                     }
                 }
             }
